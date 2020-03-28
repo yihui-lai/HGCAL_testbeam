@@ -85,16 +85,20 @@ To provide tracking information, on either side of the black box were planes of 
 \label{sec:simu}
 
 The responses of various tile geometries are estimated with Monte-Carlo simulation based on the Geant4 toolkit\cite{geant4}.
+The expected light yield is compared with real data in section xx.
 
-%description about the geometry
-Figure \ref{fig:g4simu}. is a schematic drawing of the simulation. 
+%simulation geometry
+Figure \ref{fig:g4simu}. is a schematic drawing describing simulation geometry. 
 The SiPM-on-tile geometry can be seperated into two parts, 
-which are tile with a dimple and SiPM on the backboard. 
-The tile is enveloped in a thin wrapping layer which helps to increase the light collection.
-A small dimple is dug out to make room for SiPM. 
-There is also a hole on the wrapping, through which the SiPM can be inserted into.
-The end of the geometry is a layer of backboard 
-which is slightly larger than the hole to prevent photons from escaping.
+one is the tile with a dimple and the other is the SiPM on the backplate. 
+
+The tile is square and enveloped in a thin wrapping layer which helps to increase the light collection.
+In center of the tile, a spherical dimple is dug out to make space for SiPM.
+A hole is also placed on the wrapping behind dimple so that SiPM could pass through.
+
+SiPM geometry follows from the realistic size in scintillator test.
+Behind SiPM is a layer of backplate, which is slightly larger than the hole to prevent photons from escaping.
+All in all, we are tying to mimic the testbeam setup. 
 
 %this graph should be changed later
 \begin{figure}[htbp]
@@ -107,30 +111,41 @@ which is slightly larger than the hole to prevent photons from escaping.
 \caption{\label{fig:g4simu} Simulation geometry}
 \end{figure}
 
-To speed up the simulation, we start directly from photons instead of the the 120 GeV protons.
-We calculated the number of photons according to the proton path length in the scintillator. 
-Then, photon's starting point were set uniformly along the beam path. 
-%reasons why we generate photons directly and how we managed to do that
+%Physics simulation
+To speed up the simulation, we start directly from scintillation photons rather than the 120 GeV protons.
+The mean number of photons is proportional to the thickness of scintillator that protons have traveled, 
+as shown in equation \ref{eqn:nphotons}. 
+\begin{equation}
+\label{eqn:nphotons}
+    N_{\gamma}=\frac{d E}{d x} \cdot \varepsilon \cdot L
+\end{equation}
+$N_{\gamma}$ is the mean number of generated photons.
+$\frac{d E}{d x}$ is the rate of energy loss \cite{pdgdata}.
+$\varepsilon$ is the scintillating efficiency \cite{scinti_eff}.
+$L$ is the thickness of traveled scintillator.
 
+%Not sure if I need to put reasons here
+%There are several reasons why we think such a skip is acceptable. 
+%First of all, we care more about the detection efficiency of photons than the exact number. 
+%Thus, in our simulations, factors like the reflectivity of wrapping, tile and dimple sizes are more worthwhile to investigate.
+%Secondly, the thickness of tile is of 3, 3.8 millimeters. 
+%Energetic protons could penetrate the tile easily and the path is more or less a straight line.
+%The number of photons is propotional to the energy deposition and photons are uniformly generated inside scintillator. 
 
-There are several reasons why we think such a skip is acceptable. 
-First of all, we care more about the detection efficiency of photons than the exact number. 
-Thus, in our simulations, factors like the reflectivity of tile wrapping, tile sizes, dimple shape and sizes are more worthwhile to study.
-Secondly, the thickness of tile is of several milimeters. 
-Energetic protons could penetrate the tile easily and the path is more or less a straight line.
-The number of photons is propotional to the energy deposition and photons are uniformly generated inside scintillator. 
+In each single simulation, 
+the exact number of photons is calculated through Possion distribution with mean of $N_{\gamma}$.
+The scintillation process is mimicked by generating photons randomly along the expected proton path. 
+Indeed, our simulation is used to estimate how many photons could finally reach the SiPM.
+The photon emmission spectrum, photon absorption length of the tile and SiPM quantum efficiency are 3 wavelength dependent optical properties in simulation,
+while the reflective properties are wavelength independent.
 
 %more details on the simulation
-More than 95\% photons lost their energy  and are not detected when they are boucing back and forth. 
-%the number should be checked, the efficiency is so low?
-We also set a maximum track length so any photons with a longer track will be stopped immediately.
-%how the data in following sections are calculated
-To make a comparision with test beam data, we simulated the responses of various tile areas, thicknesses and dimple sizes. 
-For each geometry, we select proton beam position uniformly across the tile and repeat the simulation 100 times to get a average response. 
-%currently, the standard error is simply taken as uncertainties. Maybe more  sophisticated method will be used later.
-
-
-
+We systematically studied the scintillator response 
+by changing tile cross sectional area, tile thickness and tile hole size.
+For each geometry, the proton beam spot is uniformly chosen across tile face and simulation is repeated many times.
+The average of detected photons is calculated to represent the expected response of this geometry.
+%currently the uncertainty is the standard error, but the processing of simu data should stay the same as the real data. May be changed later.
+The results are shown in section xx and compared with test beam data.
 
 
 
@@ -165,6 +180,11 @@ CMS Collaboration, \emph{The Phase-2 Upgrade of the CMS Endcap Calorimeter}, CER
 \bibitem{geant4}
 S. Agostinelli et al (GEANT4), Nucl. Instrum. Meth. A, 506: 250 (2003)
 
+\bibitem{pdgdata}
+http://pdg.lbl.gov/2018/AtomicNuclearProperties/HTML/polyvinyltoluene.html
+
+\bibitem{scinti_eff}
+https://eljentechnology.com/products/plastic-scintillators/ej-200-ej-204-ej-208-ej-212
 
 \end{thebibliography}
 \end{document}
